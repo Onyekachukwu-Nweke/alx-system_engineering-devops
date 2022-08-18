@@ -2,12 +2,12 @@
 # This script prints "Best School" using while loop
 # and then prints "Hi" when it reaches the Ninth iteration
 
-i="0"
+i=0
 
-while [ $i -ne "10" ]; do
+while [ $i -ne 10 ]; do
 	echo "Best School";
 	i=$((i + 1))
-	if [ $i -eq "9" ];
+	if [ $i -eq 9 ];
 	then
 		echo "Hi";
 	fi
