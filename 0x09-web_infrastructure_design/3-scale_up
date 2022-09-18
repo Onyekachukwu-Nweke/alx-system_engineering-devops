@@ -1,4 +1,4 @@
-![Task3](/0x09-web_infrastructure_design/img/Task3.png)
+![Task3](/0x09-web_infrastructure_design/img/Task3.jpg)
 Answer:
 	We now have 3 servers. We distributed the application server, webserver
 	and database with in their own server. Now they became a cluster server
