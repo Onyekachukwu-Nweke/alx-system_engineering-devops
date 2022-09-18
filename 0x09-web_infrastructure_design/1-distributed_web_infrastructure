@@ -1,4 +1,4 @@
-![Task1](/0x09-web_infrastructure_design/img/Task1.png)
+![Task1](/0x09-web_infrastructure_design/img/Task1.jpg)
 Answers:
         1. Now there are two servers. Each server has it's own web server,
         application server, codebase, and Database. It will be helpful incase
