@@ -1,4 +1,4 @@
-
+![Task2](/0x09-web_infrastructure_design/img/Task2.jpg)
 Answer:
         1. We added firewalls to control traffic and for better security.
         We also added monitoring tools, that will monitor our application and
