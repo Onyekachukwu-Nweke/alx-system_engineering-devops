@@ -2,5 +2,5 @@
 # Script that installs Nginx server and redirects /redirect_me
 sudo apt-get -y update
 sudo apt-get -y install nginx
-echo "Hello World!" > /var/www/html/index.nginx-debian.html
+echo "Hello World!" | sudo tee /var/www/html/index.html
 service nginx restart
