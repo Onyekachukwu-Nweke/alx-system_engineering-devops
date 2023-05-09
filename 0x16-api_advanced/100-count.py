@@ -1,63 +1,46 @@
 #!/usr/bin/python3
 """
-Recursive function that queries the Reddit API, parses the title of all hot
-articles, and prints a sorted count of given keywords (case-insensitive,
-delimited by spaces. Javascript should count as javascript, but java should'nt
-
-
-Requirement
-If word_list contains the same word (case-insensitive),
-the final count should be the sum of each duplicate (example below with java)
-
-Results should be printed in descending order, by the count, and
-if the count is the same for separate keywords, they should then be sorted
-alphabetically (ascending, from A to Z). Words with no matches should be
-skipped and not printed. Words must be printed in lowercase.
-
-Results are based on the number of times a keyword appears,
-not titles it appears in. java java java counts as 3 separate occurrences of
-java.
-
-To make life easier, java. or java! or java_ should not count as java
-
-If no posts match or the subreddit is invalid, print nothing.
+Contains the count_words function
 """
-import requests as req
+import requests
 
 
-def count_words(subreddit, word_list, kw_dict={}, after=''):
-    """recursive function that queries the Reddit API"""
-    base = 'https://www.reddit.com'
-    header = {'User-agent': 'n_onyekachukwu'}
-    respons = req.get('{}/r/{}/hot.json?after={}&limit=100'
-                      .format(base, subreddit, after),
-                      headers=header, allow_redirects=False)
-    if respons.status_code != 200:
-        return None
+def count_words(subreddit, word_list, found_list=[], after=None):
+    """
+    Prints counts of given words found in hot posts of a given subreddit.
 
-    keywords = []
-    for word in word_list:
-        word = word.lower()
-        keywords.append(word)
-    for keyword in keywords:
-        if keyword not in kw_dict:
-            kw_dict[keyword] = 0
+    Args:
+        subreddit (str): The subreddit to search.
+        word_list (list): The list of words to search for in post titles.
+        found_list (obj): Key/value pairs of words/counts.
+        after (str): The parameter for the next page of the API results.
+    """
+    user_agent = {'User-agent': 'n_onyekachukwu'}
+    posts = requests.get('http://www.reddit.com/r/{}/hot.json?after={}'
+                         .format(subreddit, after), headers=user_agent)
+    if after is None:
+        word_list = [word.lower() for word in word_list]
+
+    if posts.status_code == 200:
+        posts = posts.json()['data']
+        aft = posts['after']
+        posts = posts['children']
+        for post in posts:
+            title = post['data']['title'].lower()
+            for word in title.split(' '):
+                if word in word_list:
+                    found_list.append(word)
+        if aft is not None:
+            count_words(subreddit, word_list, found_list, aft)
         else:
-            kw_dict[keyword] += 1
-
-    posts = respons.json().get('data').get('children')
-    _next = respons.json().get('data').get('after')
-
-    for post in posts:
-        title = post.get('data').get('title')
-        title_words = title.lower().split(' ')
-        for key, value in kw_dict.items():
-            if key in title_words:
-                kw_dict[key] = value + 1
-
-    if _next is None:
-        sort = sorted(kw_dict, key=lambda x: x[1], reverse=True)
-        for key in sort:
-            print('{}: {}'.format(key, kw_dict[key]))
-    if _next is not None:
-        count_words(subreddit, word_list, kw_dict, _next)
+            result = {}
+            for word in found_list:
+                if word.lower() in result.keys():
+                    result[word.lower()] += 1
+                else:
+                    result[word.lower()] = 1
+            for key, value in sorted(result.items(), key=lambda item: item[1],
+                                     reverse=True):
+                print('{}: {}'.format(key, value))
+    else:
+        return
