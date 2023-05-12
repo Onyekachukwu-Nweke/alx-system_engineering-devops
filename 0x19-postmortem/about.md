@@ -40,3 +40,6 @@ Using one of the web stack debugging project issue I have previously done or an 
 
 ## Resources
 [Apiumhub](https://apiumhub.com/tech-blog-barcelona/software-development-project-postmortem/)
+[Sysadmin Casts](https://sysadmincasts.com/episodes/20-how-to-write-an-incident-report-postmortem)
+[Atlassian](https://www.atlassian.com/incident-management/postmortem)
+[PagerDuty](https://www.pagerduty.com/resources/learn/incident-postmortem/)
